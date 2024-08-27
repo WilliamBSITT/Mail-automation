@@ -6,15 +6,14 @@ import re
 # Gmail SMTP server parameters
 smtp_server = 'smtp.gmail.com'
 smtp_port = 587  # Use port 465 if you prefer SSL over TLS
-email_address = 'adresse@gmail.com' # Your sender email address 
-password = 'token' # The token for mail -> more details on token_documentation
+email_address = 'adresse@gmail.com'  # Your sender email address
+password = 'token'  # The token for mail -> more details on token_documentation
 
-# Email subject and content
+# Email subject
 subject = 'Hack club'
-content = "I'm currently testing"
 
 def create_email(to_address, subject, content):
-    #Create an email with the specified parameters.
+    """Create an email with the specified parameters."""
     msg = MIMEMultipart()
     msg['From'] = email_address
     msg['To'] = to_address
@@ -23,7 +22,7 @@ def create_email(to_address, subject, content):
     return msg
 
 def send_email(msg, to_address):
-    #Send an email via Gmail SMTP server.
+    """Send an email via Gmail SMTP server."""
     try:
         server = smtplib.SMTP(smtp_server, smtp_port)
         server.starttls()  # Start TLS (encrypted) connection
@@ -40,16 +39,27 @@ def is_valid_email(email):
     return re.match(email_regex, email) is not None
 
 def main():
-    # Input email addresses separated by ';'
-    participant_names = input("Enter email addresses separated by ';' : ")
+    participant_info = input("Enter names and email addresses separated by ';' (ex, 'Alice:alice@gmail.com,Bob:bob@gmail.com') : ")
 
-    # Split email addresses using ';' as a separator
-    email_list = participant_names.split(";")
+    # Split participants into name-email pairs using ';' as the separator
+    pairs = participant_info.split(';')
 
-    # Send an email to each address
-    for email in email_list:
-        email = email.strip()  # Remove any extra spaces around the email address
+    for pair in pairs:
+        # Split each pair into name and email
+        name_email = pair.split(':')
+        
+        if len(name_email) != 2:
+            print(f'Invalid format for pair: {pair}')
+            continue
+        
+        name, email = name_email
+        name = name.strip()
+        email = email.strip()
+
         if is_valid_email(email):
+            content = f"Hello {name},\nI'm currently testing this email.\nHack Club"
+            print(content)
+            print(email)
             msg = create_email(email, subject, content)
             send_email(msg, email)
         else:
@@ -57,5 +67,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
