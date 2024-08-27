@@ -59,6 +59,6 @@ This script is similar to the first one but allows for personalized emails to ea
 
 ## License
 
-This project is licensed under the [License Name] - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the [MIT] - see the [LICENSE](LICENSE) file for details.
 
 
